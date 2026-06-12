@@ -7,15 +7,22 @@
 
 #import <UIKit/UIKit.h>
 #import "ContactTableViewController.h"
+#import "Contact_List-Swift.h"
 
 @interface ContactListViewController : UIViewController
 
 // This will hold the reference to your child table view
 @property (nonatomic, strong) ContactTableViewController *embeddedTableVC;
 
+- (IBAction)addNewContactTapped:(id)sender;
+
 @end
 
 @implementation ContactListViewController
+
+- (IBAction)addNewContactTapped:(id)sender {
+    [ContactPresenter presentCreateContactFrom:self];
+}
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     [super prepareForSegue:segue sender:sender];

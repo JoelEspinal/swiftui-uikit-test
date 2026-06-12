@@ -11,21 +11,11 @@
         <!--View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController id="Y6W-OH-hqX" customClass="ContactListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nfz-kS-SWN">
-                                <rect key="frame" x="0.0" y="45" width="393" height="54"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Contactos" id="uIQ-gV-i15">
-                                        <barButtonItem key="leftBarButtonItem" title="Delete" id="imG-ub-0FC" colorLabel="IBBuiltInLabel-Red"/>
-                                        <barButtonItem key="rightBarButtonItem" title="+" id="Ku6-QF-YOP"/>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gxa-oh-qYM">
                                 <rect key="frame" x="16" y="169" width="361" height="727"/>
                                 <subviews>
@@ -36,6 +26,12 @@
                                             <outlet property="delegate" destination="Y6W-OH-hqX" id="DKT-rx-Wta"/>
                                         </connections>
                                     </searchBar>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="306-M6-AIG">
+                                        <rect key="frame" x="0.0" y="0.0" width="368" height="685"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="8x5-gh-FBA"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="KDi-xi-EUr"/>
+                                    </scrollView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="fgT-CY-uYK" firstAttribute="top" secondItem="1Y5-HM-GKF" secondAttribute="top" constant="42" id="4Nb-X4-YfH"/>
@@ -48,6 +44,20 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="gS9-G0-5Ji"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="1Y5-HM-GKF"/>
                             </scrollView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nfz-kS-SWN">
+                                <rect key="frame" x="0.0" y="45" width="393" height="54"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Contactos" id="uIQ-gV-i15">
+                                        <barButtonItem key="leftBarButtonItem" title="Borrar" id="imG-ub-0FC" colorLabel="IBBuiltInLabel-Red"/>
+                                        <barButtonItem key="rightBarButtonItem" title="Nuevo" id="Ku6-QF-YOP">
+                                            <connections>
+                                                <action selector="addNewContactTapped:" destination="Y6W-OH-hqX" id="custom-action-id-1"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="y36-9H-i09"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>

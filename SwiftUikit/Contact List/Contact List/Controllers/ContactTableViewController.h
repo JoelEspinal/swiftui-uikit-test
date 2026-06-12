@@ -8,7 +8,16 @@
 #import <UIKit/UIKit.h>
 
 @interface ContactTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-// Your outlets go here
 
+// UITableView outlet – required since we inherit UIViewController, not UITableViewController
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+
+// Read-only count so callers can guard against an empty list
+@property (nonatomic, readonly) NSInteger contactsCount;
+
+// Bulk-delete API — called by ContactListViewController nav bar buttons
+- (void)enterBulkDeleteMode;
+- (void)exitBulkDeleteMode;
+- (void)deleteSelectedContacts;
 
 @end

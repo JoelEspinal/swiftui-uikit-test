@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 
+
 // La anotación @objc hace que esta clase sea visible desde archivos .m de Objective-C
 @objc class ContactPresenter: NSObject {
     
@@ -25,7 +26,7 @@ import SwiftUI
         let hostingController = UIHostingController(rootView: swiftUIView)
         
         // 3. Opcional: Configurar cómo se mostrará (ej: pantalla completa)
-        hostingController.modalPresentationStyle = .pageSheet
+        hostingController.modalPresentationStyle = UIModalPresentationStyle.pageSheet
         
         // 4. Usamos el controlador de Objective-C que nos pasaron para presentar el Hosting Controller
         sourceViewController.present(hostingController, animated: true, completion: nil)

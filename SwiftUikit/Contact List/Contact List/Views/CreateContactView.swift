@@ -13,25 +13,20 @@ struct CreateContactView: View {
     // Callback para avisarle a UIKit/Objective-C que la pantalla debe cerrarse
     var dismissAction: () -> Void
     
-    // Opciones para pasar datos si se requiere
-    var onSave: ((String, String, String) -> Void)? = nil
-    
-    // Propiedades de estado para los campos del formulario
-    @State private var name: String = ""
-    @State private var lastName: String = ""
-    @State private var phoneNumber: String = ""
+    // Instanciamos el ViewModel usando la macro @Observable de iOS 17+
+    @State private var contactViewModel = ContactViewModel()
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Nombre", text: $name)
+                    TextField("Nombre", text: $contactViewModel.name)
                         .textContentType(.givenName)
                     
-                    TextField("Apellido", text: $lastName)
+                    TextField("Apellido", text: $contactViewModel.lastName)
                         .textContentType(.familyName)
                     
-                    TextField("Teléfono", text: $phoneNumber)
+                    TextField("Teléfono", text: $contactViewModel.phoneNumber)
                         .keyboardType(.phonePad)
                         .textContentType(.telephoneNumber)
                 }
@@ -46,10 +41,15 @@ struct CreateContactView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Guardar") {
-                        onSave?(name, lastName, phoneNumber)
+                        contactViewModel.save(
+                            name: contactViewModel.name,
+                            lastName: contactViewModel.lastName,
+                            phone: contactViewModel.phoneNumber,
+                            imageUrl: contactViewModel.randomImageUrl
+                        )
                         dismissAction()
                     }
-                    .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(contactViewModel.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }
         }

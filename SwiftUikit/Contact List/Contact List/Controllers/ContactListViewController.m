@@ -11,33 +11,105 @@
 
 @interface ContactListViewController : UIViewController
 
-// This will hold the reference to your child table view
 @property (nonatomic, strong) ContactTableViewController *embeddedTableVC;
+@property (nonatomic, weak) IBOutlet UINavigationBar *topNavigationBar;
+@property (nonatomic, assign) BOOL isBulkDeleting;
 
 - (IBAction)addNewContactTapped:(id)sender;
+- (IBAction)borrarTapped:(id)sender;
 
 @end
 
 @implementation ContactListViewController
 
+#pragma mark - Nav Actions
+
 - (IBAction)addNewContactTapped:(id)sender {
     [ContactPresenter presentCreateContactFrom:self];
 }
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (IBAction)borrarTapped:(id)sender {
+    if (!self.isBulkDeleting) {
+        // Guard: nothing to delete if the list is empty
+        if (self.embeddedTableVC.contactsCount == 0) {
+            UIAlertController *alert = [UIAlertController
+                alertControllerWithTitle:@"Sin contactos"
+                                 message:@"No hay contactos para borrar."
+                          preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:nil]];
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        [self enterBulkDeleteMode];
+    } else {
+        [self confirmBulkDelete];
+    }
+}
+
+#pragma mark - Bulk Delete Lifecycle
+
+- (void)enterBulkDeleteMode {
+    self.isBulkDeleting = YES;
+    [self.embeddedTableVC enterBulkDeleteMode];
+
+    // Left: Cancelar (plain)
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc]
+        initWithTitle:@"Cancelar"
+                style:UIBarButtonItemStylePlain
+               target:self
+               action:@selector(cancelBulkDelete)];
+
+    // Right: Borrar in red — confirms the deletion
+    UIBarButtonItem *confirmBtn = [[UIBarButtonItem alloc]
+        initWithTitle:@"Borrar"
+                style:UIBarButtonItemStyleDone
+               target:self
+               action:@selector(confirmBulkDelete)];
+    confirmBtn.tintColor = [UIColor systemRedColor];
+
+    self.topNavigationBar.topItem.leftBarButtonItem  = cancelBtn;
+    self.topNavigationBar.topItem.rightBarButtonItem = confirmBtn;
+}
+
+- (void)cancelBulkDelete {
+    self.isBulkDeleting = NO;
+    [self.embeddedTableVC exitBulkDeleteMode];
+    [self restoreDefaultNavItems];
+}
+
+- (void)confirmBulkDelete {
+    [self.embeddedTableVC deleteSelectedContacts];
+    self.isBulkDeleting = NO;
+    [self restoreDefaultNavItems];
+}
+
+- (void)restoreDefaultNavItems {
+    UIBarButtonItem *borrarBtn = [[UIBarButtonItem alloc]
+        initWithTitle:@"Borrar"
+                style:UIBarButtonItemStylePlain
+               target:self
+               action:@selector(borrarTapped:)];
+    borrarBtn.tintColor = [UIColor systemRedColor];
+
+    UIBarButtonItem *nuevoBtn = [[UIBarButtonItem alloc]
+        initWithTitle:@"Nuevo"
+                style:UIBarButtonItemStylePlain
+               target:self
+               action:@selector(addNewContactTapped:)];
+
+    self.topNavigationBar.topItem.leftBarButtonItem  = borrarBtn;
+    self.topNavigationBar.topItem.rightBarButtonItem = nuevoBtn;
+}
+
+#pragma mark - Embed Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     [super prepareForSegue:segue sender:sender];
-    
-    // 1. Check if this is the embed segue we named in Step 1
     if ([segue.identifier isEqualToString:@"embedTableView"]) {
-        
-        // 2. Safely grab the destination view controller and cast it to your custom class
         self.embeddedTableVC = (ContactTableViewController *)segue.destinationViewController;
-        
-        NSLog(@"Successfully connected Main View Controller to Table View Controller in code!");
-        
-        // 3. (Optional) If you have a contacts array ready in your Main VC,
-        // you can instantly pass it down to the table view right here:
-        // self.embeddedTableVC.contacts = self.contacts;
+        NSLog(@"Successfully connected Main VC to Table VC via embed segue.");
     }
 }
 

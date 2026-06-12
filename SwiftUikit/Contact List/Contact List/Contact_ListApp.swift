@@ -11,6 +11,7 @@ struct Contact_ListApp: App {
     // This tells SwiftUI to use the traditional UIKit AppDelegate class
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+
     var body: some Scene {
         // We use an empty view or a placeholder scene because
         // the SceneDelegate below will immediately overwrite it with the Storyboard.

@@ -10,12 +10,12 @@
 #import "ContactTableViewController.h"
 #import "Contact_List-Swift.h"
 
-@interface ContactTableViewController () <UISearchBarDelegate>
+@interface ContactTableViewController ()
 // Master list from Core Data
 @property (nonatomic, strong) NSArray<ContactMO *> *contacts;
 // Filtered subset shown while searching
 @property (nonatomic, strong) NSArray<ContactMO *> *filteredContacts;
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, copy) NSString *currentSearchQuery;
 @property (nonatomic, assign) BOOL isSearching;
 @end
 
@@ -26,13 +26,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
-
-    // Build search bar — shown only when contacts exist (set as tableHeaderView)
-    self.searchBar = [[UISearchBar alloc] init];
-    self.searchBar.placeholder = @"Buscar por nombre, apellido...";
-    self.searchBar.delegate = self;
-    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    [self.searchBar sizeToFit];
 
     [self fetchContactsFromCoreData];
 
@@ -78,17 +71,15 @@
         return;
     }
 
-    // 4. Show search bar only when there are contacts
-    self.tableView.tableHeaderView = (self.contacts.count > 0) ? self.searchBar : nil;
-
-    // 5. If a search was active, reapply it; otherwise clear
-    if (self.isSearching && self.searchBar.text.length > 0) {
-        [self applyFilter:self.searchBar.text];
+    // 4. If a search was active, reapply it; otherwise show full list
+    if (self.isSearching && self.currentSearchQuery.length > 0) {
+        [self applyFilter:self.currentSearchQuery];
     } else {
         self.isSearching = NO;
         self.filteredContacts = nil;
         [self.tableView reloadData];
     }
+    [self notifyContactsChanged];
 }
 
 #pragma mark - Bulk Delete
@@ -127,9 +118,13 @@
     }
 
     self.contacts = [mutableContacts copy];
+    self.isSearching = NO;
+    self.currentSearchQuery = @"";
+    self.filteredContacts = nil;
     [self.tableView deleteRowsAtIndexPaths:selectedPaths
                           withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView setEditing:NO animated:YES];
+    [self notifyContactsChanged];
 }
 
 - (NSInteger)contactsCount {
@@ -141,46 +136,37 @@
     return self.isSearching ? self.filteredContacts : self.contacts;
 }
 
+#pragma mark - Search
+- (void)filterWithQuery:(NSString *)query {
+    self.currentSearchQuery = query;
+
+    if (query.length == 0) {
+        [self clearFilter];
+        return;
+    }
+
+    self.isSearching = YES;
+    [self applyFilter:query];
+}
+
+- (void)clearFilter {
+    self.currentSearchQuery = @"";
+    self.isSearching = NO;
+    self.filteredContacts = nil;
+    [self.tableView reloadData];
+}
+
 // Filters self.contacts and reloads the table
 - (void)applyFilter:(NSString *)query {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:
-        @"name CONTAINS[cd] %@ OR lastName CONTAINS[cd] %@ OR imageUrl CONTAINS[cd] %@",
-        query, query, query];
+        @"name CONTAINS[cd] %@ OR lastName CONTAINS[cd] %@ OR phone CONTAINS[cd] %@ OR imageUrl CONTAINS[cd] %@",
+        query, query, query, query];
     self.filteredContacts = [self.contacts filteredArrayUsingPredicate:predicate];
     [self.tableView reloadData];
 }
 
-#pragma mark - UISearchBarDelegate
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if (searchText.length == 0) {
-        self.isSearching = NO;
-        self.filteredContacts = nil;
-    } else {
-        self.isSearching = YES;
-        [self applyFilter:searchText];
-    }
-    [self.tableView reloadData];
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    [searchBar setShowsCancelButton:YES animated:YES];
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    [searchBar setShowsCancelButton:NO animated:YES];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    searchBar.text = @"";
-    self.isSearching = NO;
-    self.filteredContacts = nil;
-    [searchBar setShowsCancelButton:NO animated:YES];
-    [searchBar resignFirstResponder];
-    [self.tableView reloadData];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
+- (void)notifyContactsChanged {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ContactsChanged" object:nil];
 }
 
 #pragma mark - Data Source Mapping
@@ -225,18 +211,17 @@
             self.filteredContacts = [mutableFiltered copy];
         }
 
-        // Hide search bar if no contacts remain
         if (self.contacts.count == 0) {
             self.isSearching = NO;
-            self.searchBar.text = @"";
-            self.tableView.tableHeaderView = nil;
+            self.currentSearchQuery = @"";
+            self.filteredContacts = nil;
         }
 
         [tableView deleteRowsAtIndexPaths:@[indexPath]
                          withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self notifyContactsChanged];
     }
 }
 
 @end
-
 

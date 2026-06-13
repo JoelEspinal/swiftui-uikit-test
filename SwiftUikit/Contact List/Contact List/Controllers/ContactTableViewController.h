@@ -20,4 +20,8 @@
 - (void)exitBulkDeleteMode;
 - (void)deleteSelectedContacts;
 
+// Search — called by ContactListViewController search bar
+- (void)filterWithQuery:(NSString *)query;
+- (void)clearFilter;
+
 @end

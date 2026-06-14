@@ -8,25 +8,23 @@
 import SwiftUI
 
 struct CreateContactView: View {
-    @Bindable var viewModel: ContactViewModel
+    @State var viewModel: ContactViewModel
     var dismissAction: () -> Void
 
-    init(viewModel: ContactViewModel, dismissAction: @escaping () -> Void) {
-        self.viewModel = viewModel
-        self.dismissAction = dismissAction
-    }
-
     var body: some View {
+        
+        @Bindable var viewModel = viewModel
+        
         NavigationStack {
             Form {
                 Section {
-                    TextField("Nombre", text: $viewModel.name)
+                    TextField("Nombre", text: $viewModel.contact.name)
                         .textContentType(.givenName)
-
-                    TextField("Apellido", text: $viewModel.lastName)
+                    
+                    TextField("Apellido", text: $viewModel.contact.lastName)
                         .textContentType(.familyName)
-
-                    TextField("Teléfono", text: $viewModel.phoneNumber)
+                    
+                    TextField("Teléfono", text: $viewModel.contact.phoneNumber)
                         .keyboardType(.phonePad)
                         .textContentType(.telephoneNumber)
                 }
@@ -41,10 +39,14 @@ struct CreateContactView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Guardar") {
-                        Task {
-                            await viewModel.save()
-                            dismissAction()
-                        }
+//                        if !viewModel.contact.name.isEmpty {
+                            Task {
+                                await viewModel.save()
+                                dismissAction()
+                            }
+//                        }
+                        
+                       
                     }
                     .disabled(!viewModel.canSave)
                 }

@@ -11,5 +11,4 @@ extension RandomImageDTO {
             url: url
         )
     }
-    
 }

@@ -12,7 +12,6 @@ struct Contact_ListApp: App {
     
     init() {
         // Initialize Dependency Container
-                
     }
     
     

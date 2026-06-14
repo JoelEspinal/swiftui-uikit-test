@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-struct GetRandomImage {
+struct GetRandomImageUseCase {
     private let repository: RandomImageRepository
     
     init(repository: RandomImageRepository) {

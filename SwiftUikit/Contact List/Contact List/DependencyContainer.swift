@@ -23,6 +23,9 @@ final class DependencyContainer {
     private lazy var contactRepository: ContactRepository = ContactRepositoryImpl()
 
     private lazy var randomImageRepository: RandomImageRepository = RandomImageRepositoryImpl(imageService: randomImageService)
+
+    private lazy var ContactViewModel: ContactViewModel = makeContactViewModel()
+
     // MARK: - Domain layer
 
     private func makeGetContactUseCase() -> GetContactUseCase {
@@ -33,16 +36,17 @@ final class DependencyContainer {
         SaveContactUseCase(repository: contactRepository)
     }
     
-    private func makeGetRandomImageUseCase() -> GetRandomImage {
-      GetRandomImage(repository: randomImageRepository)
+    private func makeGetRandomImageUseCase() -> GetRandomImageUseCase {
+      GetRandomImageUseCase(repository: randomImageRepository)
     }
 
     // MARK: - Presentation layer
 
     func makeContactViewModel() -> ContactViewModel {
-        ContactViewModel(
+        Contact_List.ContactViewModel(
             getContactUseCase: makeGetContactUseCase(),
-            saveContactUseCase: makeSaveContactUseCase()
+            saveContactUseCase: makeSaveContactUseCase(),
+            getRandomImageUseCase: makeGetRandomImageUseCase()
         )
     }
 }

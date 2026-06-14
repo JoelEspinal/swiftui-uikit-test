@@ -8,6 +8,14 @@ import SwiftUI
 
 @main
 struct Contact_ListApp: App {
+    
+    
+    init() {
+        // Initialize Dependency Container
+                
+    }
+    
+    
     // This tells SwiftUI to use the traditional UIKit AppDelegate class
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     

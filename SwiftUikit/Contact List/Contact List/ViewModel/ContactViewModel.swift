@@ -1,10 +1,9 @@
 //
-//  CreateContactViewModel.swift
+//  ContactViewModel.swift
 //  Contact List
 //
 //  Created by Joel Espinal on 12/6/26.
 //
-
 
 import Foundation
 import Observation
@@ -12,54 +11,46 @@ import Observation
 extension Notification.Name {
     static let contactSaved = Notification.Name("ContactSaved")
 }
-import CoreData
 
 @MainActor
 @Observable
-class ContactViewModel {
-    
-     var name: String = ""
-     var lastName: String = ""
-     var phoneNumber: String = ""
-     var randomImageUrl: String = ""
-    
-    
+final class ContactViewModel {
 
-    func save(name: String, lastName: String, phone: String, imageUrl: String) -> Void {
-        let context = CoreDataManager.shared.context
-        
-        // 1. Create a new Core Data object instance
-        let newContact = ContactMO(context: context)
-        newContact.id = UUID()
-        newContact.name = name
-        newContact.lastName = lastName
-        newContact.phone = phone
-        newContact.imageUrl = imageUrl // From your API phase
-        
-        // 2. Save it to disk
-        CoreDataManager.shared.saveContext()
-        
-        // 3. Notify observers (e.g. ContactTableViewController) that data changed
-        NotificationCenter.default.post(name: .contactSaved, object: nil)
-        
+    var name = ""
+    var lastName = ""
+    var phoneNumber = ""
+    var randomImageUrl = ""
+
+    private let getContactUseCase: GetContactUseCase
+    private let saveContactUseCase: SaveContactUseCase
+
+    init(getContactUseCase: GetContactUseCase, saveContactUseCase: SaveContactUseCase) {
+        self.getContactUseCase = getContactUseCase
+        self.saveContactUseCase = saveContactUseCase
     }
-    
-    func getContact(byUUID uuid: UUID) -> ContactMO? {
-        let context = CoreDataManager.shared.context
-        let fetchRequest: NSFetchRequest<ContactMO> = ContactMO.fetchRequest()
-        
-        // Exact match filter
-        fetchRequest.predicate = NSPredicate(format: "id == %@", uuid as CVarArg)
-        
-        // Performance Optimization: Tell Core Data to stop looking after it finds the first match
-        fetchRequest.fetchLimit = 1
-        
+
+    var canSave: Bool {
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    func save() async {
+        let contact = Contact(
+            id: UUID(),
+            name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+            lastName: lastName.trimmingCharacters(in: .whitespacesAndNewlines),
+            phoneNumber: phoneNumber.trimmingCharacters(in: .whitespacesAndNewlines),
+            randomImageUrl: randomImageUrl
+        )
+
         do {
-            let results = try context.fetch(fetchRequest)
-            return results.first // Returns the ContactMO or nil if not found
+            _ = try await saveContactUseCase.execute(contact: contact)
+            NotificationCenter.default.post(name: .contactSaved, object: nil)
         } catch {
-            print("Failed to look up contact: \(error)")
-            return nil
+            print("Failed to save contact: \(error)")
         }
+    }
+
+    func getContact(byUUID uuid: UUID) async -> Contact? {
+        try? await getContactUseCase.execute(id: uuid)
     }
 }

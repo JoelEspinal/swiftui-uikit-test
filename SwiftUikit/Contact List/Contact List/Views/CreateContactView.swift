@@ -5,28 +5,28 @@
 //  Created by Joel Espinal on 11/6/26.
 //
 
-import Foundation
-
 import SwiftUI
 
 struct CreateContactView: View {
-    // Callback para avisarle a UIKit/Objective-C que la pantalla debe cerrarse
+    @Bindable var viewModel: ContactViewModel
     var dismissAction: () -> Void
-    
-    // Instanciamos el ViewModel usando la macro @Observable de iOS 17+
-    @State private var contactViewModel = ContactViewModel()
-    
+
+    init(viewModel: ContactViewModel, dismissAction: @escaping () -> Void) {
+        self.viewModel = viewModel
+        self.dismissAction = dismissAction
+    }
+
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Nombre", text: $contactViewModel.name)
+                    TextField("Nombre", text: $viewModel.name)
                         .textContentType(.givenName)
-                    
-                    TextField("Apellido", text: $contactViewModel.lastName)
+
+                    TextField("Apellido", text: $viewModel.lastName)
                         .textContentType(.familyName)
-                    
-                    TextField("Teléfono", text: $contactViewModel.phoneNumber)
+
+                    TextField("Teléfono", text: $viewModel.phoneNumber)
                         .keyboardType(.phonePad)
                         .textContentType(.telephoneNumber)
                 }
@@ -41,15 +41,12 @@ struct CreateContactView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Guardar") {
-                        contactViewModel.save(
-                            name: contactViewModel.name,
-                            lastName: contactViewModel.lastName,
-                            phone: contactViewModel.phoneNumber,
-                            imageUrl: contactViewModel.randomImageUrl
-                        )
-                        dismissAction()
+                        Task {
+                            await viewModel.save()
+                            dismissAction()
+                        }
                     }
-                    .disabled(contactViewModel.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(!viewModel.canSave)
                 }
             }
         }
@@ -57,5 +54,8 @@ struct CreateContactView: View {
 }
 
 #Preview {
-    CreateContactView(dismissAction: {})
+    CreateContactView(
+        viewModel: DependencyContainer.shared.makeContactViewModel(),
+        dismissAction: {}
+    )
 }

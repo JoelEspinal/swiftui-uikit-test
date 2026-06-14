@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9B7EA9F12FDBA48400A437B2 /* Contact-List-Bridging-Header2.h in Sources */ = {isa = PBXBuildFile; fileRef = 9B7EA9F02FDBA47500A437B2 /* Contact-List-Bridging-Header2.h */; };
 		9B7EAA8C2FDC63EB00A437B2 /* ContactModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B7EAA8B2FDC63E300A437B2 /* ContactModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -32,7 +31,6 @@
 		9B7EA9BD2FDB9FC700A437B2 /* Contact List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Contact List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B7EA9CA2FDB9FC900A437B2 /* Contact ListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Contact ListTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B7EA9D42FDB9FC900A437B2 /* Contact ListUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Contact ListUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B7EA9F02FDBA47500A437B2 /* Contact-List-Bridging-Header2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Contact-List-Bridging-Header2.h"; sourceTree = "<group>"; };
 		9B7EAA8B2FDC63E300A437B2 /* ContactModel.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodeld; path = ContactModel.xcdatamodeld; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,7 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				9B7EAA8B2FDC63E300A437B2 /* ContactModel.xcdatamodeld */,
-				9B7EA9F02FDBA47500A437B2 /* Contact-List-Bridging-Header2.h */,
 				9B7EA9BF2FDB9FC700A437B2 /* Contact List */,
 				9B7EA9CD2FDB9FC900A437B2 /* Contact ListTests */,
 				9B7EA9D72FDB9FC900A437B2 /* Contact ListUITests */,
@@ -247,7 +244,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B7EAA8C2FDC63EB00A437B2 /* ContactModel.xcdatamodeld in Sources */,
-				9B7EA9F12FDBA48400A437B2 /* Contact-List-Bridging-Header2.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

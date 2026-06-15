@@ -185,6 +185,26 @@
     return cell;
 }
 
+#pragma mark - Tap to Details
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showContactDetail"]) {
+        
+        // 1. Cast the sender back to a UITableViewCell
+        UITableViewCell *tappedCell = (UITableViewCell *)sender;
+        
+        // 2. Ask the table view to find the exact IndexPath for that cell
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+        
+        // 3. Get the model matching that row index
+        ContactMO *selectedContact = self.contacts[indexPath.row];
+                
+        // 4. Cast the destination and inject the data
+        [ContactDetailPresenter presentCreateContactFrom:self withContact: selectedContact];
+    }
+}
+
+
 #pragma mark - Swipe to Delete
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {

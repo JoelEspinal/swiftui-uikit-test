@@ -8,16 +8,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Contact List View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController id="Y6W-OH-hqX" customClass="ContactListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nfz-kS-SWN">
-                                <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="54"/>
                                 <items>
                                     <navigationItem title="Contactos" id="uIQ-gV-i15">
                                         <barButtonItem key="leftBarButtonItem" title="Borrar" id="imG-ub-0FC" colorLabel="IBBuiltInLabel-Red">
@@ -34,11 +34,11 @@
                                 </items>
                             </navigationBar>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="fgT-CY-uYK">
-                                <rect key="frame" x="0.0" y="103" width="393" height="56"/>
+                                <rect key="frame" x="0.0" y="172" width="393" height="64"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ctr-view-embed-001">
-                                <rect key="frame" x="0.0" y="159" width="393" height="600"/>
+                                <rect key="frame" x="0.0" y="236" width="393" height="548"/>
                                 <connections>
                                     <segue destination="ZPZ-mf-3Ws" kind="embed" identifier="embedTableView" id="Vog-29-3w0"/>
                                 </connections>
@@ -47,16 +47,16 @@
                         <viewLayoutGuide key="safeArea" id="y36-9H-i09"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Nfz-kS-SWN" firstAttribute="top" secondItem="y36-9H-i09" secondAttribute="top" id="nav-top-constraint"/>
-                            <constraint firstItem="Nfz-kS-SWN" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="nav-leading-constraint"/>
-                            <constraint firstAttribute="trailing" secondItem="Nfz-kS-SWN" secondAttribute="trailing" id="nav-trailing-constraint"/>
-                            <constraint firstItem="fgT-CY-uYK" firstAttribute="top" secondItem="Nfz-kS-SWN" secondAttribute="bottom" id="search-top-constraint"/>
-                            <constraint firstItem="fgT-CY-uYK" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="search-leading-constraint"/>
-                            <constraint firstAttribute="trailing" secondItem="fgT-CY-uYK" secondAttribute="trailing" id="search-trailing-constraint"/>
-                            <constraint firstItem="ctr-view-embed-001" firstAttribute="top" secondItem="fgT-CY-uYK" secondAttribute="bottom" id="container-top-constraint"/>
-                            <constraint firstItem="ctr-view-embed-001" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="container-leading-constraint"/>
-                            <constraint firstAttribute="trailing" secondItem="ctr-view-embed-001" secondAttribute="trailing" id="container-trailing-constraint"/>
                             <constraint firstItem="y36-9H-i09" firstAttribute="bottom" secondItem="ctr-view-embed-001" secondAttribute="bottom" id="container-bottom-constraint"/>
+                            <constraint firstItem="ctr-view-embed-001" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="container-leading-constraint"/>
+                            <constraint firstItem="ctr-view-embed-001" firstAttribute="top" secondItem="fgT-CY-uYK" secondAttribute="bottom" id="container-top-constraint"/>
+                            <constraint firstAttribute="trailing" secondItem="ctr-view-embed-001" secondAttribute="trailing" id="container-trailing-constraint"/>
+                            <constraint firstItem="Nfz-kS-SWN" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="nav-leading-constraint"/>
+                            <constraint firstItem="Nfz-kS-SWN" firstAttribute="top" secondItem="y36-9H-i09" secondAttribute="top" id="nav-top-constraint"/>
+                            <constraint firstAttribute="trailing" secondItem="Nfz-kS-SWN" secondAttribute="trailing" id="nav-trailing-constraint"/>
+                            <constraint firstItem="fgT-CY-uYK" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="search-leading-constraint"/>
+                            <constraint firstItem="fgT-CY-uYK" firstAttribute="top" secondItem="Nfz-kS-SWN" secondAttribute="bottom" id="search-top-constraint"/>
+                            <constraint firstAttribute="trailing" secondItem="fgT-CY-uYK" secondAttribute="trailing" id="search-trailing-constraint"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vkB-9d-RrQ"/>
@@ -69,16 +69,16 @@
             </objects>
             <point key="canvasLocation" x="-416.03053435114504" y="64.788732394366207"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Contact Table View Controller-->
         <scene sceneID="TWY-hf-qAC">
             <objects>
                 <tableViewController id="ZPZ-mf-3Ws" customClass="ContactTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="5kQ-lg-F9K">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="548"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="QOP-w5-l3f" detailTextLabel="mK4-fa-tje" rowHeight="138" style="IBUITableViewCellStyleSubtitle" reuseIdentifier="ContactCell" id="m0x-Ir-Eo7">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactCell" textLabel="QOP-w5-l3f" detailTextLabel="mK4-fa-tje" rowHeight="138" style="IBUITableViewCellStyleSubtitle" id="m0x-Ir-Eo7">
                                 <rect key="frame" x="0.0" y="50" width="393" height="138"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="m0x-Ir-Eo7" id="Z3E-ge-vCL">

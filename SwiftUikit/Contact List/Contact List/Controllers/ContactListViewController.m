@@ -18,6 +18,7 @@
 
 - (IBAction)addNewContactTapped:(id)sender;
 - (IBAction)borrarTapped:(id)sender;
+- (IBAction)showDetails:(id)sender;
 
 @end
 
@@ -75,10 +76,14 @@
     }
 }
 
+- (IBAction)showDetails:(id)sender {
+    [ContactPresenter presentCreateContactFrom:self];
+}
+
 #pragma mark - Nav Actions
 
 - (IBAction)addNewContactTapped:(id)sender {
-    [ContactPresenter presentCreateContactFrom:self];
+   [ContactPresenter presentCreateContactFrom:self];
 }
 
 - (IBAction)borrarTapped:(id)sender {

@@ -24,4 +24,8 @@
 - (void)filterWithQuery:(NSString *)query;
 - (void)clearFilter;
 
+-(void)tapContactDetails;
+
+
 @end
+

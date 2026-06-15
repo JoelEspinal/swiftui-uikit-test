@@ -49,4 +49,20 @@ final class DependencyContainer {
             getRandomImageUseCase: makeGetRandomImageUseCase()
         )
     }
+    
+    // MARK: - Presentation layer - Cntact Detail
+    
+//    func makeContactViewModelDetail(contactmo: ContactMO?) -> ContactViewModel {
+//        
+//        let contactViewModel = makeContactViewModel()
+//        
+//        if let currentContact = contactmo{
+//            let contact = Contact(id: currentContact.id ?? UUID(), name: currentContact.name ?? "", lastName: currentContact.lastName ?? "", phoneNumber: currentContact.phone ?? "", randomImageUrl: currentContact.imageUrl ?? "")
+//            contactViewModel.contact = contact
+//            return contactViewModel
+//        }
+//        
+//        
+//        return contactViewModel;
+//    }
 }

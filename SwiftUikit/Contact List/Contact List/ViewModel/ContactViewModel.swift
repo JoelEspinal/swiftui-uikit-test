@@ -28,6 +28,16 @@ class ContactViewModel: ObservableObject {
         self.getRandomImageUseCase = getRandomImageUseCase
     }
     
+    
+    
+    init(getContactUseCase: GetContactUseCase, saveContactUseCase: SaveContactUseCase, getRandomImageUseCase: GetRandomImageUseCase, Contact: ContactMO) {
+        self.getContactUseCase = getContactUseCase
+        self.saveContactUseCase = saveContactUseCase
+        self.getRandomImageUseCase = getRandomImageUseCase
+        
+//        self.contact = Contact
+    }
+    
     var canSave: Bool {
         !contact.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
          && !contact.phoneNumber.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty

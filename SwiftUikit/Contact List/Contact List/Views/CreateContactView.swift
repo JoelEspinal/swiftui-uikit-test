@@ -28,7 +28,43 @@ struct CreateContactView: View {
                         .keyboardType(.phonePad)
                         .textContentType(.telephoneNumber)
                 }
+                
+                if let imageUrlString = viewModel.contact.randomImageUrl,
+                   let url = URL(string: imageUrlString) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(width: 250, height: 250)
+                    .frame(maxWidth: .infinity) 
+                } else {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 250, height: 250)
+                        .frame(maxWidth: .infinity)
+                }
+                
+
+                    
+             
+                Button {
+                    Task {
+                        await viewModel.getRandomImage()
+                        print($viewModel.contact.randomImageUrl)
+                        
+                    }
+                } label: {
+                    Label("Refresh", systemImage: "arrow.clockwise")
+                }
+                .labelStyle(.iconOnly)
+                .disabled($viewModel.contact.randomImageUrl == nil)
+                
             }
+
             .navigationTitle("Nuevo Contacto")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

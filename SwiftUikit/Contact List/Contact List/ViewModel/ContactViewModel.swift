@@ -55,4 +55,11 @@ class ContactViewModel: ObservableObject {
     func getContact(byUUID uuid: UUID) async -> Contact? {
         try? await getContactUseCase.execute(id: uuid)
     }
+    
+    func getRandomImage() async {
+        if contact.randomImageUrl != nil || contact.randomImageUrl?.isEmpty == true {
+            let randomImage = try! await getRandomImageUseCase.execute()
+            contact.randomImageUrl = randomImage?.url
+        }
+    }
 }

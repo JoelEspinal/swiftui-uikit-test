@@ -14,7 +14,7 @@ struct Contact: Equatable {
     var name: String
     var lastName: String
     var phoneNumber: String
-    var randomImageUrl: String
+    var randomImageUrl: String?
     
     init(id: UUID, name: String, lastName: String, phoneNumber: String, randomImageUrl: String) {
         self.id = id

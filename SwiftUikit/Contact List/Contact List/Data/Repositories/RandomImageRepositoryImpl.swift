@@ -17,8 +17,8 @@ class RandomImageRepositoryImpl: RandomImageRepository {
     }
     
     func fetchRandomImage() async throws -> RandomImage? {
-        let randomImage = try! await imageService.fetchCharacter()
-        let imageEntity = randomImage.toEntity()
+        let randomImage = try! await imageService.fetchRandomImage()
+        let imageEntity = randomImage?.toEntity()
         return imageEntity
     }
 }

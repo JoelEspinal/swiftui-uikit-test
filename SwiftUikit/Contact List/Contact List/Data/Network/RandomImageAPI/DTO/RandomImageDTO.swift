@@ -13,5 +13,5 @@ struct RandomImageDTO: Codable {
     let width, height: Int
 }
 
-//typealias images = [RandomImage]
+typealias images = [RandomImage]
 

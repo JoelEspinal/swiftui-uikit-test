@@ -26,6 +26,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 
     [self fetchContactsFromCoreData];
 
@@ -192,20 +194,23 @@
 
 #pragma mark - Tap to Details
 - (void)tapContactDetails:(id)sender{
-    //    if ([segue.identifier isEqualToString:@"showContactDetail"]) {
-        
-        // 1. Cast the sender back to a UITableViewCell
-        UITableViewCell *tappedCell = (UITableViewCell *)sender;
-        
-        // 2. Ask the table view to find the exact IndexPath for that cell
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
-        
-        // 3. Get the model matching that row index
-        ContactMO *selectedContact = self.contacts[indexPath.row];
-        
-        // 4. Cast the destination and inject the data
-        [ContactPresenter presentDetailContactFrom:self contactMO:selectedContact];
-//    }
+    // 1. Cast the sender back to a UITableViewCell
+    UITableViewCell *tappedCell = (UITableViewCell *)sender;
+
+    // 2. Ask the table view to find the exact IndexPath for that cell
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+
+    // 3. Get the model matching that row index (use activeContacts to respect search)
+    ContactMO *selectedContact = self.activeContacts[indexPath.row];
+
+    // 4. Present the CreateContactView populated with the selected contact
+    [ContactPresenter presentDetailContactFrom:self contactMO:selectedContact];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ContactMO *selectedContact = self.activeContacts[indexPath.row];
+    [ContactPresenter presentDetailContactFrom:self contactMO:selectedContact];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Swipe to Delete

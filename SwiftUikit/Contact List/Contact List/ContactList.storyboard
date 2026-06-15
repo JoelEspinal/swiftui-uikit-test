@@ -101,6 +101,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <accessibility key="accessibilityConfiguration" identifier="ContactCell"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -114,7 +115,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XQw-gX-eAq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="521" y="76"/>
+            <point key="canvasLocation" x="734" y="59"/>
         </scene>
     </scenes>
     <resources>

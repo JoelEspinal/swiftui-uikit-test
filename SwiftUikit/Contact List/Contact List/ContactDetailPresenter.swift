@@ -10,15 +10,15 @@ import SwiftUI
 
 @objc class ContactDetailPresenter: NSObject {
 
-    @objc static func presentCreateContact(from sourceViewController: UIViewController, withContact: ContactMO?) {
+    @objc static func presentDetailContact(from sourceViewController: UIViewController, withContact: ContactMO?) {
         Task { @MainActor in
-            let viewModel: ContactViewModel = DependencyContainer.shared.makeContactViewModel()
-//            if withContact == nil {
-//                viewModel = DependencyContainer.shared.makeContactViewModel()
-//            } else {
-//                let viewModel = DependencyContainer.shared.makeContactViewModelDetail(contactmo: withContact)
-//
-//            }
+            var viewModel: ContactViewModel!
+            if withContact == nil {
+                viewModel = DependencyContainer.shared.makeContactViewModel()
+            } else {
+                viewModel = DependencyContainer.shared.makeContactViewModelDetail(contactmo: withContact)
+
+            }
             
             let swiftUIView = CreateContactView(viewModel: viewModel, dismissAction: {
                 sourceViewController.dismiss(animated: true, completion: nil)

@@ -76,9 +76,11 @@
     }
 }
 
-- (IBAction)showDetails:(id)sender {
-    [ContactPresenter presentCreateContactFrom:self];
-}
+//- (IBAction)tapContactDetails:(id)sender {
+//    [ContactPresenter presentCreateContactFrom:self];
+//}
+
+
 
 #pragma mark - Nav Actions
 

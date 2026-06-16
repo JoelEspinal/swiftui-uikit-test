@@ -208,9 +208,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ContactMO *selectedContact = self.activeContacts[indexPath.row];
-    [ContactPresenter presentDetailContactFrom:self contactMO:selectedContact];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // Only present detail view if not in editing mode (bulk delete)
+    if (!self.tableView.editing) {
+        ContactMO *selectedContact = self.activeContacts[indexPath.row];
+        [ContactPresenter presentDetailContactFrom:self contactMO:selectedContact];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 #pragma mark - Swipe to Delete

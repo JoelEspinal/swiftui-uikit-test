@@ -25,7 +25,7 @@ import SwiftUI
     }
     
     @objc static func presentDetailContact(from sourceViewController: UIViewController, contactMO: ContactMO) {
-        var currentContact = Contact(id: contactMO.id!, name: contactMO.name ?? "", lastName: contactMO.lastName ?? "", phoneNumber: contactMO.phone ?? "", randomImageUrl: contactMO.imageUrl ?? "")
+        var currentContact = Contact(id: contactMO.id ?? UUID.zero, name: contactMO.name ?? "", lastName: contactMO.lastName ?? "", phoneNumber: contactMO.phone ?? "", randomImageUrl: contactMO.imageUrl ?? "")
         
         Task { @MainActor in
             let viewModel = DependencyContainer.shared.makeContactViewModelDetail(contactmo: contactMO)

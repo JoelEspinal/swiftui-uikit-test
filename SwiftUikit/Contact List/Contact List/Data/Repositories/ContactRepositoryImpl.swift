@@ -22,11 +22,9 @@ class ContactRepositoryImpl: ContactRepository {
         fetchRequest.fetchLimit = 1
         do {
             let results = try context.fetch(fetchRequest)
-
-            var res: [ContactDTO] = results.compactMap(ContactDTO.fromContactModel)
-            return res.first?.toEntity()
             
-//            return results.map{$0.Contact} //.first // Returns the ContactMO or nil if not found
+            let res: [ContactDTO] = results.compactMap(ContactDTO.fromContactModel)
+            return res.first?.toEntity()
         } catch {
             print("Failed to look up contact: \(error)")
             return nil
@@ -36,22 +34,41 @@ class ContactRepositoryImpl: ContactRepository {
     
     func save(contact: Contact) -> Contact? {
         let context = CoreDataManager.shared.context
+        let fetchRequest: NSFetchRequest<ContactMO> = ContactMO.fetchRequest()
+        var updateContact: ContactMO
         
-        // 1. Create a new Core Data object instance
-        let newContact = ContactMO(context: context)
-        newContact.id = contact.id ?? UUID()
-        newContact.name = contact.name
-        newContact.lastName = contact.lastName
-        newContact.phone = contact.phoneNumber
-        newContact.imageUrl = contact.randomImageUrl
-        
-        // 2. Save it to disk
-        CoreDataManager.shared.saveContext()
-        
-        return ContactDTO.fromContactModel(contact: newContact).toEntity()
-        
-//        // 3. Notify observers (e.g. ContactTableViewController) that data changed
-//        NotificationCenter.default.post(name: .contactSaved, object: nil)
-
+        if contact.id != nil && contact.id != UUID.zero {
+            fetchRequest.predicate = NSPredicate(format: "id == %@", argumentArray: [contact.id!])
+            fetchRequest.fetchLimit = 1
+            
+            
+            do {
+                let results = try context.fetch(fetchRequest)
+                if let existingContact = results.first {
+                    // Found! Update the existing record
+                    existingContact.name = contact.name
+                    existingContact.lastName = contact.lastName
+                    existingContact.phone = contact.phoneNumber
+                    existingContact.imageUrl = contact.randomImageUrl
+                    updateContact = existingContact
+                } else {
+                    // Create a new Contact
+                    let newContact = ContactMO(context: context)
+                    newContact.id = contact.id ?? UUID()
+                    newContact.name = contact.name
+                    newContact.lastName = contact.lastName
+                    newContact.phone = contact.phoneNumber
+                    newContact.imageUrl = contact.randomImageUrl
+                    updateContact = newContact
+                }
+                
+                try context.save()
+                return ContactDTO.fromContactModel(contact: updateContact).toEntity()
+            } catch {
+                print("Failed to save or update: \(error)")
+                return nil
+            }
+        }
+        return nil
     }
 }

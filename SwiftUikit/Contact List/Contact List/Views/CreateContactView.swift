@@ -58,7 +58,7 @@ struct CreateContactView: View {
                         
                     }
                 } label: {
-                    Label("Refresh", systemImage: "arrow.clockwise")
+                    Text("Recargar Imagen")
                 }
                 .labelStyle(.iconOnly)
                 .disabled($viewModel.contact.randomImageUrl == nil)
@@ -75,14 +75,12 @@ struct CreateContactView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Guardar") {
-//                        if !viewModel.contact.name.isEmpty {
+                        if !viewModel.contact.name.isEmpty {
                             Task {
                                 await viewModel.save()
                                 dismissAction()
                             }
-//                        }
-                        
-                       
+                        }
                     }
                     .disabled(!viewModel.canSave)
                 }

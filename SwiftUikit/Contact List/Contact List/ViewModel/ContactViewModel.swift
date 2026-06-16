@@ -40,7 +40,7 @@ class ContactViewModel: ObservableObject {
     
     var canSave: Bool {
         !contact.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-         && !contact.phoneNumber.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+//         && !contact.phoneNumber.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     func save() async {
